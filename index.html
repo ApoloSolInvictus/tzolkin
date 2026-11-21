@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#111a16">
+    <meta name="description" content="Un homenaje en memoria de Tzolkin: Labrador Retriever, compañero y agente encubierto por 13 años.">
+    <title>Tzolkin Forever — Lux Aeterna</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="app">
+      <section class="loader" id="loader" aria-label="Abriendo el homenaje">
+        <div class="loader-inner">
+          <div class="seal" aria-hidden="true">
+            <svg viewBox="0 0 64 64" role="presentation">
+              <path d="M31.8 30.2c-5.8-7.6-15.3-4.7-15.3 2.2 0 4.3 3.9 6.7 8.2 6.7h14.6c4.4 0 8.2-2.4 8.2-6.7 0-6.9-9.5-9.8-15.3-2.2Z" />
+              <ellipse cx="17.2" cy="21.8" rx="5.1" ry="7" transform="rotate(-29 17.2 21.8)" />
+              <ellipse cx="29" cy="16.6" rx="5.1" ry="7" transform="rotate(-8 29 16.6)" />
+              <ellipse cx="41.4" cy="17.1" rx="5.1" ry="7" transform="rotate(12 41.4 17.1)" />
+              <ellipse cx="51.7" cy="23.3" rx="5.1" ry="7" transform="rotate(35 51.7 23.3)" />
+            </svg>
+          </div>
+          <p class="loader-overline">ARCHIVO DE LEALTAD · EXPEDIENTE 013</p>
+          <h1 class="loader-title">Tzolkin <span>Forever</span></h1>
+          <p class="loader-latin">Lux Aeterna</p>
+          <div class="loader-track" aria-hidden="true"><span id="loader-progress"></span></div>
+          <p class="loader-status" id="loader-status">Preparando un lugar para tus recuerdos…</p>
+          <button class="enter-button" id="enter-button" type="button">Abrir el homenaje</button>
+        </div>
+      </section>
+
+      <section class="memorial" id="memorial" hidden>
+        <section class="gallery" aria-label="Galería de recuerdos de Tzolkin">
+          <div class="slides" id="slides" aria-live="polite">
+            <div class="empty-state" id="empty-state">
+              <div class="empty-seal" aria-hidden="true">
+                <svg viewBox="0 0 64 64" role="presentation">
+                  <path d="M31.8 30.2c-5.8-7.6-15.3-4.7-15.3 2.2 0 4.3 3.9 6.7 8.2 6.7h14.6c4.4 0 8.2-2.4 8.2-6.7 0-6.9-9.5-9.8-15.3-2.2Z" />
+                  <ellipse cx="17.2" cy="21.8" rx="5.1" ry="7" transform="rotate(-29 17.2 21.8)" />
+                  <ellipse cx="29" cy="16.6" rx="5.1" ry="7" transform="rotate(-8 29 16.6)" />
+                  <ellipse cx="41.4" cy="17.1" rx="5.1" ry="7" transform="rotate(12 41.4 17.1)" />
+                  <ellipse cx="51.7" cy="23.3" rx="5.1" ry="7" transform="rotate(35 51.7 23.3)" />
+                </svg>
+              </div>
+              <p class="eyebrow">AGENTE ENCUBIERTO · COMPAÑERO ETERNO</p>
+              <h2>Un gran corazón<br><span>siempre de guardia.</span></h2>
+              <p class="empty-copy">Tzolkin, Labrador Retriever rubio y enorme.<br>13 años a tu lado. Una vida entera de lealtad.</p>
+              <button class="add-memory-button" id="choose-media-empty" type="button">Ver fotos de este teléfono</button>
+              <p class="local-note">La selección es una vista previa privada en este dispositivo.</p>
+            </div>
+          </div>
+
+          <header class="topbar">
+            <div class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 64 64" role="presentation">
+                <path d="M31.8 30.2c-5.8-7.6-15.3-4.7-15.3 2.2 0 4.3 3.9 6.7 8.2 6.7h14.6c4.4 0 8.2-2.4 8.2-6.7 0-6.9-9.5-9.8-15.3-2.2Z" />
+                <ellipse cx="17.2" cy="21.8" rx="5.1" ry="7" transform="rotate(-29 17.2 21.8)" />
+                <ellipse cx="29" cy="16.6" rx="5.1" ry="7" transform="rotate(-8 29 16.6)" />
+                <ellipse cx="41.4" cy="17.1" rx="5.1" ry="7" transform="rotate(12 41.4 17.1)" />
+                <ellipse cx="51.7" cy="23.3" rx="5.1" ry="7" transform="rotate(35 51.7 23.3)" />
+              </svg>
+            </div>
+            <div class="topbar-copy">
+              <p class="topbar-title">TZOLKIN FOREVER</p>
+              <p class="topbar-subtitle">ARCHIVO DE UN COMPAÑERO</p>
+            </div>
+            <button class="topbar-add" id="choose-media-top" type="button" aria-label="Añadir recuerdos desde este teléfono">＋</button>
+          </header>
+
+          <div class="gallery-shade" aria-hidden="true"></div>
+          <div class="gallery-caption" id="gallery-caption" hidden>
+            <p class="eyebrow" id="memory-label">RECUERDO</p>
+            <p class="memory-description" id="memory-description"></p>
+          </div>
+          <div class="gallery-controls" id="gallery-controls" hidden>
+            <button class="text-control" id="previous-memory" type="button">Anterior</button>
+            <p class="slide-count" id="slide-count" aria-live="polite"></p>
+            <button class="text-control" id="next-memory" type="button">Siguiente</button>
+          </div>
+          <div class="local-preview-banner" id="local-preview-banner" hidden>
+            Vista previa privada · solo en este teléfono
+          </div>
+          <input class="visually-hidden" id="media-upload" type="file" accept="image/*,video/*" multiple>
+        </section>
+
+        <section class="listening-panel" aria-label="Música y subtítulos">
+          <div class="captions" aria-live="polite" aria-atomic="true">
+            <p class="caption-line caption-en"><span class="caption-tag">EN</span><span id="english-caption">English captions will appear here when an authorized transcript is added.</span></p>
+            <p class="caption-line caption-es"><span class="caption-tag">ES</span><span id="spanish-caption">Aquí aparecerá la traducción sincronizada cuando agregues una letra autorizada.</span></p>
+          </div>
+
+          <div class="player">
+            <button class="play-button" id="play-button" type="button" aria-label="Reproducir">
+              <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.8c0-.8.9-1.3 1.6-.9l9.2 6.1c.6.4.6 1.3 0 1.7l-9.2 6.1c-.7.5-1.6 0-1.6-.8V5.8Z" /></svg>
+              <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>
+            </button>
+            <div class="player-main">
+              <div class="track-heading">
+                <div>
+                  <p class="track-title">Kiss and Say Goodbye</p>
+                  <p class="track-artist">The Manhattans</p>
+                </div>
+                <p class="player-status" id="player-status">PISTA DEL HOMENAJE</p>
+              </div>
+              <div class="timeline-row">
+                <span class="time-readout" id="current-time">0:00</span>
+                <input class="timeline" id="timeline" type="range" min="0" max="1000" value="0" aria-label="Posición de la canción" disabled>
+                <span class="time-readout" id="duration">0:00</span>
+              </div>
+            </div>
+          </div>
+          <audio id="song-audio" preload="metadata" src="./assets/kiss-and-say-goodbye.mp3"></audio>
+
+          <div class="panel-footer">
+            <p>En memoria de Tzolkin <span aria-hidden="true">·</span> Lux Aeterna</p>
+            <label class="caption-loader" for="captions-upload">Subtítulos</label>
+            <input class="visually-hidden" id="captions-upload" type="file" accept="application/json,.json">
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
