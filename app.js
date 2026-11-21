@@ -24,6 +24,7 @@ const duration = document.querySelector("#duration");
 
 let memories = [];
 let activeMemory = 0;
+let playbackTimeline = [];
 let captionCues = [];
 let temporaryUrls = [];
 let previewIsTemporary = false;
@@ -113,6 +114,86 @@ function mediaKind(item) {
   return "image";
 }
 
+function buildPlaybackTimeline() {
+  if (memories.length === 0 || !Number.isFinite(audio.duration) || audio.duration <= 0) {
+    playbackTimeline = [];
+    return;
+  }
+
+  const totalDuration = audio.duration;
+  const videoLength = memories.reduce((sum, item) => {
+    if (mediaKind(item) !== "video") return sum;
+    return sum + Math.max(0, Number(item.durationSec) || 0);
+  }, 0);
+  const videoScale = videoLength > totalDuration ? totalDuration / videoLength : 1;
+  const stillCount = memories.filter((item) => mediaKind(item) !== "video").length;
+  const stillDuration = stillCount
+    ? Math.max(0, totalDuration - videoLength * videoScale) / stillCount
+    : 0;
+  let cursor = 0;
+
+  playbackTimeline = memories.map((item) => {
+    const itemDuration = mediaKind(item) === "video"
+      ? (Math.max(0, Number(item.durationSec) || 0) * videoScale)
+      : stillDuration;
+    const segment = { start: cursor, end: cursor + itemDuration, duration: itemDuration };
+    cursor = segment.end;
+    return segment;
+  });
+
+  if (playbackTimeline.length > 0) {
+    playbackTimeline[playbackTimeline.length - 1].end = totalDuration;
+    playbackTimeline[playbackTimeline.length - 1].duration = totalDuration - playbackTimeline[playbackTimeline.length - 1].start;
+  }
+}
+
+function syncActiveVideo(video, index) {
+  const segment = playbackTimeline[index];
+  if (!segment || !(video instanceof HTMLVideoElement)) return;
+
+  const offset = Math.max(0, audio.currentTime - segment.start);
+  if (Number.isFinite(video.duration) && video.duration > 0) {
+    const boundedOffset = Math.min(offset, Math.max(0, video.duration - 0.04));
+    if (Math.abs(video.currentTime - boundedOffset) > 0.7) video.currentTime = boundedOffset;
+  }
+
+  if (audio.paused || audio.ended || index !== activeMemory) {
+    video.pause();
+  } else {
+    const playback = video.play();
+    if (playback && typeof playback.catch === "function") playback.catch(() => {});
+  }
+}
+
+function syncSlideshow() {
+  if (memories.length === 0) return;
+  if (playbackTimeline.length !== memories.length) buildPlaybackTimeline();
+  if (playbackTimeline.length !== memories.length) return;
+
+  const time = Math.max(0, audio.currentTime);
+  let index = playbackTimeline.findIndex((segment) => time >= segment.start && time < segment.end);
+  if (index < 0) index = time >= audio.duration ? memories.length - 1 : 0;
+  if (activeMemory !== index) {
+    activeMemory = index;
+    renderMemory();
+  }
+
+  const video = slidesHost.querySelector("video.slide-video");
+  if (video) syncActiveVideo(video, activeMemory);
+}
+
+function selectMemory(index) {
+  if (memories.length === 0) return;
+  activeMemory = (index + memories.length) % memories.length;
+  const segment = playbackTimeline[activeMemory];
+  if (segment && Number.isFinite(audio.duration) && audio.duration > 0) {
+    audio.currentTime = Math.min(segment.start + 0.02, Math.max(0, audio.duration - 0.02));
+    syncSlideshow();
+  } else {
+    renderMemory();
+  }
+}
+
 function clearRenderedMedia() {
   slidesHost.querySelectorAll(".slide-media").forEach((element) => element.remove());
 }
@@ -140,9 +221,16 @@ function renderMemory() {
     media.decoding = "async";
   } else {
     media.playsInline = true;
-    media.controls = true;
-    media.preload = "metadata";
+    media.controls = false;
+    media.preload = "auto";
     media.muted = true;
+    media.addEventListener("loadedmetadata", () => {
+      if (Number.isFinite(media.duration) && media.duration > 0) {
+        item.durationSec = media.duration;
+        buildPlaybackTimeline();
+        syncSlideshow();
+      }
+    }, { once: true });
   }
   slidesHost.prepend(media);
   memoryLabel.textContent = item.label || "RECUERDO DE TZOLKIN";
@@ -160,6 +248,8 @@ async function loadBundledMedia() {
     // The empty memorial screen is the intended first-run state.
   }
   renderMemory();
+  buildPlaybackTimeline();
+  syncSlideshow();
 }
 
 function openMediaPicker() {
@@ -180,20 +270,20 @@ mediaUpload.addEventListener("change", () => {
     alt: file.name,
     label: file.type.startsWith("video/") ? "VIDEO DE TZOLKIN" : "FOTOGRAFÍA DE TZOLKIN",
     caption: "",
+    durationSec: 0,
   }));
   activeMemory = 0;
   previewIsTemporary = true;
+  buildPlaybackTimeline();
   renderMemory();
   mediaUpload.value = "";
 });
 
 document.querySelector("#previous-memory").addEventListener("click", () => {
-  activeMemory = (activeMemory - 1 + memories.length) % memories.length;
-  renderMemory();
+  selectMemory(activeMemory - 1);
 });
 document.querySelector("#next-memory").addEventListener("click", () => {
-  activeMemory = (activeMemory + 1) % memories.length;
-  renderMemory();
+  selectMemory(activeMemory + 1);
 });
 
 document.addEventListener("keydown", (event) => {
@@ -206,6 +296,8 @@ audio.addEventListener("loadedmetadata", () => {
   duration.textContent = formatTime(audio.duration);
   timeline.disabled = false;
   playerStatus.textContent = "PISTA DISPONIBLE";
+  buildPlaybackTimeline();
+  syncSlideshow();
 });
 audio.addEventListener("timeupdate", () => {
   currentTime.textContent = formatTime(audio.currentTime);
@@ -213,20 +305,24 @@ audio.addEventListener("timeupdate", () => {
     timeline.value = String(Math.round((audio.currentTime / audio.duration) * 1000));
   }
   showCaptionForTime();
+  syncSlideshow();
 });
 audio.addEventListener("play", () => {
   playButton.classList.add("is-playing");
   playButton.setAttribute("aria-label", "Pausar");
+  syncSlideshow();
 });
 audio.addEventListener("pause", () => {
   playButton.classList.remove("is-playing");
   playButton.setAttribute("aria-label", "Reproducir");
+  syncSlideshow();
 });
+audio.addEventListener("seeked", syncSlideshow);
 audio.addEventListener("error", () => {
   playButton.disabled = true;
-  playerStatus.textContent = "AUDIO NO PUBLICADO";
-  englishCaption.textContent = "The audio file is available in the private project copy.";
-  spanishCaption.textContent = "Para el sitio público, agrega una pista que tengas permiso de publicar.";
+  playerStatus.textContent = "AUDIO NO DISPONIBLE";
+  englishCaption.textContent = "The audio file could not be opened on this device.";
+  spanishCaption.textContent = "No se pudo abrir la pista de audio en este dispositivo.";
 });
 
 playButton.addEventListener("click", async () => {
@@ -244,6 +340,7 @@ playButton.addEventListener("click", async () => {
 timeline.addEventListener("input", () => {
   if (Number.isFinite(audio.duration) && audio.duration > 0) {
     audio.currentTime = (Number(timeline.value) / 1000) * audio.duration;
+    syncSlideshow();
   }
 });
 

@@ -1,3 +1,28 @@
 {
-  "items": []
+  "items": [
+    { "type": "image", "src": "media/1.jpg", "alt": "Tzolkin y su compañero en una selfie.", "label": "FOTOGRAFÍA 01" },
+    { "type": "video", "src": "media/2.mp4", "durationSec": 9.734, "alt": "Video de Tzolkin, recuerdo 02.", "label": "VIDEO 02" },
+    { "type": "image", "src": "media/3.jpeg", "alt": "Tzolkin recibe caricias en casa.", "label": "FOTOGRAFÍA 03" },
+    { "type": "video", "src": "media/4.mp4", "durationSec": 4.766667, "alt": "Video de Tzolkin, recuerdo 04.", "label": "VIDEO 04" },
+    { "type": "image", "src": "media/5.jpeg", "alt": "Tzolkin descansando sobre el césped.", "label": "FOTOGRAFÍA 05" },
+    { "type": "image", "src": "media/6.jpeg", "alt": "Tzolkin acostado en el patio.", "label": "FOTOGRAFÍA 06" },
+    { "type": "image", "src": "media/7.jpeg", "alt": "Tzolkin descansando dentro de casa.", "label": "FOTOGRAFÍA 07" },
+    { "type": "image", "src": "media/8.jpeg", "alt": "Retrato cercano de Tzolkin.", "label": "FOTOGRAFÍA 08" },
+    { "type": "image", "src": "media/9.jpeg", "alt": "Tzolkin recostado junto a su familia.", "label": "FOTOGRAFÍA 09" },
+    { "type": "image", "src": "media/10.jpeg", "alt": "Retrato de Tzolkin junto a una manta colorida.", "label": "FOTOGRAFÍA 10" },
+    { "type": "image", "src": "media/11.jpeg", "alt": "Tzolkin dormido en su cama.", "label": "FOTOGRAFÍA 11" },
+    { "type": "image", "src": "media/12.jpeg", "alt": "Tzolkin descansando en la entrada de casa.", "label": "FOTOGRAFÍA 12" },
+    { "type": "image", "src": "media/13.jpeg", "alt": "Collage de momentos de Tzolkin en casa.", "label": "FOTOGRAFÍA 13" },
+    { "type": "image", "src": "media/14.jpeg", "alt": "Tzolkin recibe atención veterinaria.", "label": "FOTOGRAFÍA 14" },
+    { "type": "image", "src": "media/15.jpeg", "alt": "Tzolkin acompañado por su familia en la clínica.", "label": "FOTOGRAFÍA 15" },
+    { "type": "image", "src": "media/16.jpeg", "alt": "Tzolkin junto a sus seres queridos.", "label": "FOTOGRAFÍA 16" },
+    { "type": "image", "src": "media/17.jpeg", "alt": "Primer plano de Tzolkin entre caricias.", "label": "FOTOGRAFÍA 17" },
+    { "type": "image", "src": "media/18.jpeg", "alt": "Su compañero abraza a Tzolkin.", "label": "FOTOGRAFÍA 18" },
+    { "type": "image", "src": "media/19.jpeg", "alt": "Familia acompañando a Tzolkin.", "label": "FOTOGRAFÍA 19" },
+    { "type": "image", "src": "media/20.jpeg", "alt": "Tzolkin acompañado durante su despedida.", "label": "FOTOGRAFÍA 20" },
+    { "type": "image", "src": "media/21.jpeg", "alt": "Su compañero y su familia junto a Tzolkin.", "label": "FOTOGRAFÍA 21" },
+    { "type": "image", "src": "media/22.jpeg", "alt": "Últimos recuerdos de Tzolkin con su familia.", "label": "FOTOGRAFÍA 22" },
+    { "type": "image", "src": "media/23.jpeg", "alt": "Su compañero se despide de Tzolkin.", "label": "FOTOGRAFÍA 23" },
+    { "type": "video", "src": "media/25.mp4", "durationSec": 4.962089, "alt": "Video de Tzolkin, recuerdo final 25.", "label": "VIDEO 25" }
+  ]
 }
